@@ -1,0 +1,91 @@
+{
+  "project_info": {
+    "project_number": "124125926085",
+    "firebase_url": "https://better-home-a2dbf-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "better-home-a2dbf",
+    "storage_bucket": "better-home-a2dbf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124125926085:android:23b407305b7669ad6f96ac",
+        "android_client_info": {
+          "package_name": "com.example.better_home"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124125926085-ge846mcn4n62h6sehc7lgemnbhe225fv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.better_home",
+            "certificate_hash": "21dcb4cece78f28a34ecd34c223d9a49a5dbaf62"
+          }
+        },
+        {
+          "client_id": "124125926085-7pt8ifl8rcu8n0gk5kq2h6nacnqql4g8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSn1Cv_zs3ZWtal9VMhnbVaO4q-9LTkB4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124125926085-7pt8ifl8rcu8n0gk5kq2h6nacnqql4g8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "124125926085-m7dhlg3qefore28ps9f2cmv4hvs7f1l8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.betterHome"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124125926085:android:cddb64ba8e07ade46f96ac",
+        "android_client_info": {
+          "package_name": "com.example.better_home_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124125926085-7pt8ifl8rcu8n0gk5kq2h6nacnqql4g8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSn1Cv_zs3ZWtal9VMhnbVaO4q-9LTkB4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124125926085-7pt8ifl8rcu8n0gk5kq2h6nacnqql4g8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "124125926085-m7dhlg3qefore28ps9f2cmv4hvs7f1l8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.betterHome"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

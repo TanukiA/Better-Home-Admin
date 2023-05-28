@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>124125926085-tl9k79s58q2qikfvl4abiri21kh266tb.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.124125926085-tl9k79s58q2qikfvl4abiri21kh266tb</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>124125926085-ge846mcn4n62h6sehc7lgemnbhe225fv.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBatXdITiafdaS_5SvQaMS2zy6YZDJSCBQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>124125926085</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.betterHomeAdmin</string>
+	<key>PROJECT_ID</key>
+	<string>better-home-a2dbf</string>
+	<key>STORAGE_BUCKET</key>
+	<string>better-home-a2dbf.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:124125926085:ios:6a18d4851450d8c46f96ac</string>
+	<key>DATABASE_URL</key>
+	<string>https://better-home-a2dbf-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+</dict>
+</plist>
