@@ -14,7 +14,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends StateMVC<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isValid = false;
+  bool _isEmailValid = false;
+  bool _isPasswordValid = false;
+  bool _isAllValid = false;
 
   @override
   void initState() {
@@ -24,37 +26,35 @@ class _LoginPageState extends StateMVC<LoginPage> {
       setState(() {
         if (widget.controller.validEmailFormat(_emailController.text) == true &&
             _emailController.text.isNotEmpty) {
-          _isValid = true;
+          _isEmailValid = true;
+          if (_isPasswordValid) {
+            _isAllValid = true;
+          }
         } else {
-          _isValid = false;
+          _isEmailValid = false;
+          _isAllValid = false;
         }
       });
     });
 
-    _emailController.addListener(() {
+    _passwordController.addListener(() {
       setState(() {
         if (_passwordController.text.isNotEmpty) {
-          _isValid = true;
+          _isPasswordValid = true;
+          if (_isEmailValid) {
+            _isAllValid = true;
+          }
         } else {
-          _isValid = false;
+          _isPasswordValid = false;
+          _isAllValid = false;
         }
       });
     });
   }
 
-  Future<void> loginBtnClicked() async {
-    if (await widget.controller
-        .isValidAdmin(_emailController.text, _passwordController.text)) {
-      login();
-    } else {
-      if (mounted) {
-        widget.controller.showUnauthorizedError(context);
-      }
-    }
-  }
-
-  void login() {
-    // widget.controller.processLogin(context, _emailController.text);
+  void loginBtnClicked() {
+    widget.controller.processAuthentication(
+        _emailController.text, _passwordController.text, context);
   }
 
   @override
@@ -75,7 +75,7 @@ class _LoginPageState extends StateMVC<LoginPage> {
       ),
       disabledForegroundColor: Colors.white,
       foregroundColor: Colors.white,
-      fixedSize: Size(size.width * 0.8, 55),
+      fixedSize: Size(size.width * 0.8, 50),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30),
       ),
@@ -108,7 +108,7 @@ class _LoginPageState extends StateMVC<LoginPage> {
               ),
               const SizedBox(height: 30),
               const Text(
-                'ADMIN LOGIN',
+                'ADMIN PORTAL',
                 style: TextStyle(
                   fontSize: 20,
                   fontFamily: 'Roboto',
@@ -118,7 +118,7 @@ class _LoginPageState extends StateMVC<LoginPage> {
               Container(
                 width: double.infinity,
                 margin: const EdgeInsets.fromLTRB(350, 30, 350, 30),
-                padding: const EdgeInsets.all(35),
+                padding: const EdgeInsets.fromLTRB(150, 35, 150, 35),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.8),
                   borderRadius: BorderRadius.circular(30),
@@ -164,7 +164,7 @@ class _LoginPageState extends StateMVC<LoginPage> {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: _isValid ? loginBtnClicked : null,
+                      onPressed: _isAllValid ? loginBtnClicked : null,
                       style: loginBtnStyle.copyWith(
                         backgroundColor: backgroundColor,
                       ),

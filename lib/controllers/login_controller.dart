@@ -1,4 +1,6 @@
+import 'package:better_home_admin/controllers/admin_controller.dart';
 import 'package:better_home_admin/models/admin.dart';
+import 'package:better_home_admin/views/admin_dashboard.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:flutter/material.dart';
 
@@ -18,8 +20,24 @@ class LoginController extends ControllerMVC {
     return regex.hasMatch(email);
   }
 
-  Future<bool> isValidAdmin(String email, String password) async {
-    return await admin.isValidAdmin(email, password);
+  Future<void> processAuthentication(
+      String email, String password, BuildContext context) async {
+    final success = await admin.login(email, password);
+    if (success) {
+      if (context.mounted) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AdminDashboard(
+                      adminCon: AdminController(),
+                      loginCon: LoginController(),
+                    )));
+      }
+    } else {
+      if (context.mounted) {
+        showUnauthorizedError(context);
+      }
+    }
   }
 
   void showUnauthorizedError(BuildContext context) {

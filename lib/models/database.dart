@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class Database extends ChangeNotifier {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
-
+/*
   Future<bool> checkAdminAccount(String email, String password) async {
     final querySnapshot = await _firebaseFirestore
         .collection("admin")
@@ -15,4 +15,5 @@ class Database extends ChangeNotifier {
 
     return querySnapshot.docs.isNotEmpty;
   }
+  */
 }
