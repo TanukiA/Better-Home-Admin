@@ -1,3 +1,4 @@
+import 'package:better_home_admin/controllers/admin_controller.dart';
 import 'package:better_home_admin/controllers/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -6,9 +7,11 @@ class VerticalMenu extends StatefulWidget {
   const VerticalMenu({
     Key? key,
     required this.loginCon,
+    required this.adminCon,
   }) : super(key: key);
 
   final LoginController loginCon;
+  final AdminController adminCon;
 
   @override
   StateMVC<VerticalMenu> createState() => _VerticalMenuState();

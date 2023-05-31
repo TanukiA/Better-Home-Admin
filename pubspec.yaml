@@ -23,6 +23,7 @@ dependencies:
   cloud_functions: ^4.3.1
   firebase_analytics: ^10.4.1
   cupertino_icons: ^1.0.2
+  charts_flutter: ^0.12.0
 
 dev_dependencies:
   flutter_test:

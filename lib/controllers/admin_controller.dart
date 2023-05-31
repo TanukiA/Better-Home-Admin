@@ -8,4 +8,16 @@ class AdminController extends ControllerMVC {
   AdminController() {
     admin = Admin(email: '', password: '');
   }
+
+  Future<int> retrieveTechnicianNumber() async {
+    return await admin.retrieveTechnicianNumber();
+  }
+
+  Future<double> getCancellationRate() async {
+    return await admin.calculateCancellationRate();
+  }
+
+  Future<int> retrieveChartData(String serviceCategory) async {
+    return await admin.retrieveServiceCount(serviceCategory);
+  }
 }
