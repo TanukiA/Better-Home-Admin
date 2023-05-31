@@ -14,4 +14,9 @@ class Admin extends ModelMVC {
     final success = await auth.signIn(email, password);
     return success;
   }
+
+  void logout() {
+    AuthService auth = AuthService();
+    auth.signOut();
+  }
 }

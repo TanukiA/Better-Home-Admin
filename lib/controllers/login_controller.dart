@@ -1,6 +1,7 @@
 import 'package:better_home_admin/controllers/admin_controller.dart';
 import 'package:better_home_admin/models/admin.dart';
 import 'package:better_home_admin/views/admin_dashboard.dart';
+import 'package:better_home_admin/views/login_page.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:flutter/material.dart';
 
@@ -57,6 +58,16 @@ class LoginController extends ControllerMVC {
           ],
         );
       },
+    );
+  }
+
+  void logoutClicked(BuildContext context) {
+    admin.logout();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LoginPage(controller: LoginController()),
+      ),
     );
   }
 }

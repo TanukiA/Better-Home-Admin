@@ -28,33 +28,11 @@ class _AdminDashboardState extends StateMVC<AdminDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> menuItems = [
-      'Dashboard',
-      'User Accounts',
-      'Registration Requests',
-      'Ongoing & Completed Services',
-      'Cancelled Services',
-      "Technician Reviews",
-    ];
-
-    String selectedMenuItem = 'Dashboard';
-
-    void onMenuItemSelected(String menuItem) {
-      setState(() {
-        selectedMenuItem = menuItem;
-      });
-    }
-
-    void onLogout() {}
-
     return Scaffold(
       backgroundColor: const Color(0xFFE8E5D4),
       body: Row(
         children: [
-          VerticalMenu(
-            menuItems: menuItems,
-            onLogout: onLogout,
-          ),
+          VerticalMenu(loginCon: LoginController()),
           const Expanded(
             child: SingleChildScrollView(
               child: Center(
