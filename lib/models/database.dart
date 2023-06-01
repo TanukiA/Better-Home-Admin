@@ -44,4 +44,30 @@ class Database extends ChangeNotifier {
         .toList();
     return matchingDocuments.length;
   }
+
+  Future<Map<String, dynamic>> readUserData() async {
+    final customersQuery = _firebaseFirestore.collection('customers');
+    final techniciansQuery = _firebaseFirestore.collection('technicians');
+
+    final customersSnapshot = await customersQuery.get();
+    final techniciansSnapshot = await techniciansQuery.get();
+
+    final List<DocumentSnapshot> allUser = [];
+    final List<String> accountType = [];
+
+    for (final customerDoc in customersSnapshot.docs) {
+      allUser.add(customerDoc);
+      accountType.add('Customer');
+    }
+
+    for (final technicianDoc in techniciansSnapshot.docs) {
+      allUser.add(technicianDoc);
+      accountType.add('Technician');
+    }
+
+    return {
+      'doc': allUser,
+      'accountType': accountType,
+    };
+  }
 }

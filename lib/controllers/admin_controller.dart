@@ -1,4 +1,5 @@
 import 'package:better_home_admin/models/admin.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:flutter/material.dart';
 
@@ -19,5 +20,9 @@ class AdminController extends ControllerMVC {
 
   Future<int> retrieveChartData(String serviceCategory) async {
     return await admin.retrieveServiceCount(serviceCategory);
+  }
+
+  Future<Map<String, dynamic>> obtainUserData() async {
+    return await admin.obtainUserData();
   }
 }

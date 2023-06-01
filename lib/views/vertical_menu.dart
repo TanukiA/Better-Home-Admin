@@ -1,5 +1,7 @@
 import 'package:better_home_admin/controllers/admin_controller.dart';
 import 'package:better_home_admin/controllers/login_controller.dart';
+import 'package:better_home_admin/views/admin_dashboard.dart';
+import 'package:better_home_admin/views/user_accounts_page.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -8,10 +10,12 @@ class VerticalMenu extends StatefulWidget {
     Key? key,
     required this.loginCon,
     required this.adminCon,
+    required this.currentScreen,
   }) : super(key: key);
 
   final LoginController loginCon;
   final AdminController adminCon;
+  final String currentScreen;
 
   @override
   StateMVC<VerticalMenu> createState() => _VerticalMenuState();
@@ -32,13 +36,41 @@ class _VerticalMenuState extends StateMVC<VerticalMenu> {
   @override
   void initState() {
     super.initState();
-    selectedMenuItem = menuItems.first;
+    selectedMenuItem = widget.currentScreen;
   }
 
   void onMenuItemSelected(String menuItem) {
     setState(() {
       selectedMenuItem = menuItem;
     });
+
+    switch (menuItem) {
+      case 'Dashboard':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AdminDashboard(
+              loginCon: widget.loginCon,
+              adminCon: widget.adminCon,
+            ),
+          ),
+        );
+        break;
+      case 'User Accounts':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => UserAccountsPage(
+              adminCon: widget.adminCon,
+            ),
+          ),
+        );
+        break;
+
+      // Handle other menu items here
+      default:
+        break;
+    }
   }
 
   @override

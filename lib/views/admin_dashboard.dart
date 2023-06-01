@@ -97,6 +97,7 @@ class _AdminDashboardState extends StateMVC<AdminDashboard> {
                     VerticalMenu(
                       loginCon: LoginController(),
                       adminCon: AdminController(),
+                      currentScreen: "Dashboard",
                     ),
                     Expanded(
                       child: Row(
@@ -226,9 +227,7 @@ class _AdminDashboardState extends StateMVC<AdminDashboard> {
                     ),
                   ],
                 )
-              : const Center(
-                  child: Text('Error: Failed to load chart data.'),
-                ),
+              : Container(),
     );
   }
 }
