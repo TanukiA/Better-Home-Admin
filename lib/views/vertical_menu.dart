@@ -79,12 +79,12 @@ class _VerticalMenuState extends StateMVC<VerticalMenu> {
 
     final ButtonStyle logoutBtnStyle = ElevatedButton.styleFrom(
       textStyle: const TextStyle(
-        fontSize: 20,
+        fontSize: 18,
         fontFamily: 'Roboto',
       ),
       backgroundColor: Colors.black,
       foregroundColor: Colors.white,
-      fixedSize: Size(size.width * 0.55, 38),
+      fixedSize: Size(size.width * 0.5, 38),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30),
       ),

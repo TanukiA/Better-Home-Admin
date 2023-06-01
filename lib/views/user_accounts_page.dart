@@ -135,86 +135,76 @@ class _UserAccountsPageState extends StateMVC<UserAccountsPage> {
                                   return const SizedBox.shrink();
                                 }
 
-                                return GestureDetector(
-                                  onTap: () {},
-                                  child: Container(
-                                    width: double.infinity,
-                                    margin:
-                                        const EdgeInsets.fromLTRB(60, 7, 60, 7),
-                                    padding: const EdgeInsets.all(20),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(30),
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: Colors.grey,
-                                          blurRadius: 3,
-                                          offset: Offset(0, 2),
+                                return Container(
+                                  width: double.infinity,
+                                  margin:
+                                      const EdgeInsets.fromLTRB(60, 7, 60, 7),
+                                  padding: const EdgeInsets.all(18),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(30),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        blurRadius: 3,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        currentType,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color:
+                                              Color.fromARGB(255, 8, 114, 70),
                                         ),
-                                      ],
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              currentType,
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: Color.fromARGB(
-                                                    255, 8, 114, 70),
-                                              ),
+                                      ),
+                                      const SizedBox(width: 35),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            userDoc['name'],
+                                            style: const TextStyle(
+                                              fontSize: 16,
                                             ),
-                                            const SizedBox(width: 35),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  userDoc['name'],
-                                                  style: const TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 8),
-                                                Text(
-                                                  userDoc['phoneNumber'],
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.grey[600],
-                                                  ),
-                                                ),
-                                              ],
+                                          ),
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            userDoc['phoneNumber'],
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey[600],
                                             ),
-                                            const Spacer(),
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                // Handle "View full profile" button action
-                                              },
-                                              style: viewBtnStyle,
-                                              child: const Text(
-                                                'View full profile',
-                                              ),
-                                            ),
-                                            const SizedBox(width: 120),
-                                            IconButton(
-                                              onPressed: () {
-                                                // Handle trash bin icon action
-                                              },
-                                              icon: const Icon(Icons.delete),
-                                              color: Colors.red,
-                                              iconSize: 30,
-                                            ),
-                                          ],
+                                          ),
+                                        ],
+                                      ),
+                                      const Spacer(),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          widget.adminCon.viewFullProfile(
+                                              currentType, userDoc, context);
+                                        },
+                                        style: viewBtnStyle,
+                                        child: const Text(
+                                          'View full profile',
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                      const SizedBox(width: 130),
+                                      IconButton(
+                                        onPressed: () {
+                                          // Handle trash bin icon action
+                                        },
+                                        icon: const Icon(Icons.delete),
+                                        color: Colors.red,
+                                        iconSize: 30,
+                                      ),
+                                    ],
                                   ),
                                 );
                               },
