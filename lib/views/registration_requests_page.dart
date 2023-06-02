@@ -5,35 +5,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-class UserAccountsPage extends StatefulWidget {
-  const UserAccountsPage({Key? key, required this.adminCon}) : super(key: key);
+class RegistrationRequestsPage extends StatefulWidget {
+  const RegistrationRequestsPage({Key? key, required this.adminCon})
+      : super(key: key);
   final AdminController adminCon;
 
   @override
-  StateMVC<UserAccountsPage> createState() => _UserAccountsPageState();
+  StateMVC<RegistrationRequestsPage> createState() =>
+      _RegistrationRequestsPageState();
 }
 
-class _UserAccountsPageState extends StateMVC<UserAccountsPage> {
+class _RegistrationRequestsPageState
+    extends StateMVC<RegistrationRequestsPage> {
   bool isLoading = true;
-  List<DocumentSnapshot> usersDoc = [];
-  List<String> accountTypeList = [];
-  String selectedAccountType = "All account types";
-  final List<String> accountTypeOptions = [
-    "All account types",
-    "Customer",
-    "Technician",
-  ];
+  List<DocumentSnapshot> techniciansDoc = [];
 
   @override
   void initState() {
-    setUserData();
+    setRequestData();
     super.initState();
   }
 
-  Future<void> setUserData() async {
-    final mapData = await widget.adminCon.obtainUserData();
-    usersDoc = mapData['doc'];
-    accountTypeList = mapData['accountType'];
+  Future<void> setRequestData() async {
+    techniciansDoc = await widget.adminCon.retrieveRegistrationRequests();
     setState(() {
       isLoading = false;
     });
@@ -48,7 +42,7 @@ class _UserAccountsPageState extends StateMVC<UserAccountsPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    final ButtonStyle viewBtnStyle = ElevatedButton.styleFrom(
+    final ButtonStyle manageBtnStyle = ElevatedButton.styleFrom(
       textStyle: const TextStyle(
         fontSize: 12,
       ),
@@ -75,65 +69,28 @@ class _UserAccountsPageState extends StateMVC<UserAccountsPage> {
                 VerticalMenu(
                   loginCon: LoginController(),
                   adminCon: AdminController(),
-                  currentScreen: "User Accounts",
+                  currentScreen: "Registration Requests",
                 ),
                 Expanded(
                   child: Column(
                     children: [
                       const SizedBox(height: 20),
                       const Text(
-                        "List of User Accounts",
+                        "Technicians' Registration Requests",
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 20),
-                      Container(
-                        margin: const EdgeInsets.only(top: 20, bottom: 12),
-                        padding: const EdgeInsets.only(left: 8, right: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: DropdownButton<String>(
-                          value: selectedAccountType,
-                          items: accountTypeOptions
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedAccountType = newValue!;
-                            });
-                          },
-                        ),
-                      ),
                       Expanded(
                         child: SingleChildScrollView(
                           child: SizedBox(
                             height: MediaQuery.of(context).size.height - 150,
                             child: ListView.builder(
-                              itemCount: usersDoc.length,
+                              itemCount: techniciansDoc.length,
                               itemBuilder: (context, index) {
-                                final currentType = accountTypeList[index];
-                                final userDoc = usersDoc[index];
-
-                                if (selectedAccountType !=
-                                        "All account types" &&
-                                    selectedAccountType != currentType) {
-                                  return const SizedBox.shrink();
-                                }
+                                final technicianDoc = techniciansDoc[index];
 
                                 return Container(
                                   width: double.infinity,
@@ -154,29 +111,19 @@ class _UserAccountsPageState extends StateMVC<UserAccountsPage> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        currentType,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color:
-                                              Color.fromARGB(255, 8, 114, 70),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 35),
                                       Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            userDoc['name'],
+                                            technicianDoc['name'],
                                             style: const TextStyle(
                                               fontSize: 16,
                                             ),
                                           ),
                                           const SizedBox(height: 8),
                                           Text(
-                                            userDoc['phoneNumber'],
+                                            technicianDoc['phoneNumber'],
                                             style: TextStyle(
                                               fontSize: 14,
                                               color: Colors.grey[600],
@@ -187,23 +134,22 @@ class _UserAccountsPageState extends StateMVC<UserAccountsPage> {
                                       const Spacer(),
                                       ElevatedButton(
                                         onPressed: () {
-                                          widget.adminCon.viewFullProfile(
-                                              currentType, userDoc, context);
+                                          widget.adminCon.manageRequestClicked(
+                                              technicianDoc, context);
                                         },
-                                        style: viewBtnStyle,
+                                        style: manageBtnStyle,
                                         child: const Text(
-                                          'View full profile',
+                                          'Manage request',
                                         ),
                                       ),
-                                      const SizedBox(width: 130),
-                                      IconButton(
-                                        onPressed: () {
-                                          widget.adminCon.deleteIconClicked(
-                                              currentType, userDoc, context);
-                                        },
-                                        icon: const Icon(Icons.delete),
-                                        color: Colors.red,
-                                        iconSize: 30,
+                                      const SizedBox(width: 100),
+                                      Text(
+                                        widget.adminCon.formatToLocalDateTime(
+                                            technicianDoc[
+                                                'dateTimeRegistered']),
+                                        style: const TextStyle(
+                                          fontSize: 11,
+                                        ),
                                       ),
                                     ],
                                   ),

@@ -1,6 +1,7 @@
 import 'package:better_home_admin/controllers/admin_controller.dart';
 import 'package:better_home_admin/controllers/login_controller.dart';
 import 'package:better_home_admin/views/admin_dashboard.dart';
+import 'package:better_home_admin/views/registration_requests_page.dart';
 import 'package:better_home_admin/views/user_accounts_page.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -61,6 +62,16 @@ class _VerticalMenuState extends StateMVC<VerticalMenu> {
           context,
           MaterialPageRoute(
             builder: (context) => UserAccountsPage(
+              adminCon: widget.adminCon,
+            ),
+          ),
+        );
+        break;
+      case 'Registration Requests':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RegistrationRequestsPage(
               adminCon: widget.adminCon,
             ),
           ),

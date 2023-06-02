@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Database extends ChangeNotifier {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   Future<int> getTechniciansCount() async {
     QuerySnapshot snapshot =
@@ -69,5 +68,47 @@ class Database extends ChangeNotifier {
       'doc': allUser,
       'accountType': accountType,
     };
+  }
+
+  Future<void> deleteUser(String accountType, String id) async {
+    CollectionReference collection;
+
+    if (accountType == "Customer") {
+      collection = _firebaseFirestore.collection('customers');
+    } else if (accountType == "Technician") {
+      collection = _firebaseFirestore.collection('technicians');
+    } else {
+      return;
+    }
+
+    try {
+      await collection.doc(id).delete();
+    } catch (e) {
+      throw PlatformException(
+        code: 'user-deletion-failed',
+        message: e.toString(),
+      );
+    }
+  }
+
+  Future<List<DocumentSnapshot>> getUnapprovedTechnicians() async {
+    QuerySnapshot snapshot = await _firebaseFirestore
+        .collection('technicians')
+        .where('approvalStatus', isEqualTo: false)
+        .get();
+
+    return snapshot.docs;
+  }
+
+  Future<void> updateApprovalStatus(String id) async {
+    try {
+      final userCollection = _firebaseFirestore.collection("technicians");
+      final userDoc = userCollection.doc(id);
+
+      await userDoc.update({'approvalStatus': true});
+    } catch (e) {
+      throw PlatformException(
+          code: 'update-approvalStatus-failed', message: e.toString());
+    }
   }
 }

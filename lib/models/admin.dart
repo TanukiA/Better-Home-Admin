@@ -49,11 +49,26 @@ class Admin extends ModelMVC {
     return userDoc;
   }
 
-  void downloadVerificationDoc(String verificationDocUrl) async {
+  void viewVerificationFile(String verificationDocUrl) async {
     final Uri url = Uri.parse(verificationDocUrl);
 
     if (!await launchUrl(url)) {
       throw Exception('Could not launch $url');
     }
+  }
+
+  Future<void> removeUserAccount(String accountType, String id) async {
+    Database firestore = Database();
+    await firestore.deleteUser(accountType, id);
+  }
+
+  Future<List<DocumentSnapshot>> retrieveRegistrationRequests() async {
+    Database firestore = Database();
+    return await firestore.getUnapprovedTechnicians();
+  }
+
+  Future<void> approveRegistrationRequest(String id) async {
+    Database firestore = Database();
+    await firestore.updateApprovalStatus(id);
   }
 }
