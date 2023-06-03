@@ -119,6 +119,7 @@ class _UserAccountsPageState extends StateMVC<UserAccountsPage> {
                           },
                         ),
                       ),
+                      const SizedBox(height: 10),
                       Expanded(
                         child: usersDoc.isEmpty
                             ? const Center(

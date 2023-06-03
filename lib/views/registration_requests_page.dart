@@ -82,7 +82,7 @@ class _RegistrationRequestsPageState
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 30),
                       Expanded(
                         child: techniciansDoc.isEmpty
                             ? const Center(

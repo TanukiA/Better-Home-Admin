@@ -17,6 +17,11 @@ class _ServiceListPageState extends StateMVC<ServiceListPage> {
   bool isLoading = true;
   List<DocumentSnapshot> servicesDoc = [];
 
+  DateTimeRange selectedDates = DateTimeRange(
+    start: DateTime(2000),
+    end: DateTime(3000),
+  );
+
   String selectedServiceStatus = "All service status";
   final List<String> serviceStatusOptions = [
     "All service status",
@@ -64,6 +69,17 @@ class _ServiceListPageState extends StateMVC<ServiceListPage> {
       shadowColor: Colors.grey[400],
     );
 
+    final ButtonStyle dateRangeBtnStyle = ElevatedButton.styleFrom(
+      textStyle: const TextStyle(
+        fontSize: 14,
+      ),
+      backgroundColor: Colors.black,
+      foregroundColor: Colors.white,
+      fixedSize: Size(size.width * 0.12, 35),
+      elevation: 3,
+      shadowColor: Colors.grey[400],
+    );
+
     return Scaffold(
       backgroundColor: const Color(0xFFE8E5D4),
       body: isLoading == true
@@ -91,41 +107,102 @@ class _ServiceListPageState extends StateMVC<ServiceListPage> {
                         ),
                       ),
                       const SizedBox(height: 25),
-                      Container(
-                        margin: const EdgeInsets.only(top: 20, bottom: 12),
-                        padding: const EdgeInsets.only(left: 8, right: 8),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(0, 3),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 20, bottom: 12),
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.5),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        child: DropdownButton<String>(
-                          value: selectedServiceStatus,
-                          items: serviceStatusOptions
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedServiceStatus = newValue!;
-                            });
-                          },
-                        ),
+                            child: DropdownButton<String>(
+                              value: selectedServiceStatus,
+                              items: serviceStatusOptions
+                                  .map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedServiceStatus = newValue!;
+                                });
+                              },
+                            ),
+                          ),
+                          const SizedBox(width: 30),
+                          ElevatedButton(
+                            style: dateRangeBtnStyle,
+                            onPressed: () async {
+                              final DateTimeRange? dateTimeRange =
+                                  await showDateRangePicker(
+                                      context: context,
+                                      firstDate: DateTime(2000),
+                                      lastDate: DateTime(3000),
+                                      initialDateRange: (selectedDates.start !=
+                                                  DateTime(2000)) &&
+                                              (selectedDates.end !=
+                                                  DateTime(3000))
+                                          ? selectedDates
+                                          : null,
+                                      builder: (context, child) {
+                                        return Column(
+                                          children: [
+                                            ConstrainedBox(
+                                              constraints: const BoxConstraints(
+                                                maxWidth: 380.0,
+                                                maxHeight: 580.0,
+                                              ),
+                                              child: child,
+                                            )
+                                          ],
+                                        );
+                                      });
+                              if (dateTimeRange != null) {
+                                setState(() {
+                                  selectedDates = dateTimeRange;
+                                });
+                              }
+                            },
+                            child: const Text("Select date range"),
+                          ),
+                          const SizedBox(width: 15),
+                          if (selectedDates.start != DateTime(2000) &&
+                              selectedDates.end != DateTime(3000))
+                            Text.rich(
+                              TextSpan(
+                                text: 'Date filter: ',
+                                style: const TextStyle(fontSize: 14),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text:
+                                        '${widget.adminCon.formatStrFromDateTime(selectedDates.start)} - ${widget.adminCon.formatStrFromDateTime(selectedDates.end)}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                        ],
                       ),
+                      const SizedBox(height: 10),
                       Expanded(
                         child: servicesDoc.isEmpty
                             ? const Center(
                                 child: Text(
-                                  "No registration request available",
+                                  "No service available",
                                   style: TextStyle(fontSize: 16),
                                 ),
                               )
@@ -139,11 +216,24 @@ class _ServiceListPageState extends StateMVC<ServiceListPage> {
                                       final serviceDoc = servicesDoc[index];
                                       final currentStatus =
                                           serviceDoc['serviceStatus'];
+                                      final serviceDateTime = widget.adminCon
+                                          .formatDateTime(
+                                              serviceDoc['dateTimeSubmitted']);
 
                                       if (selectedServiceStatus !=
                                               "All service status" &&
                                           selectedServiceStatus !=
                                               currentStatus) {
+                                        return const SizedBox.shrink();
+                                      }
+
+                                      if (selectedDates.start !=
+                                              DateTime(2000) &&
+                                          selectedDates.end != DateTime(3000) &&
+                                          (serviceDateTime.isBefore(
+                                                  selectedDates.start) ||
+                                              serviceDateTime.isAfter(
+                                                  selectedDates.end))) {
                                         return const SizedBox.shrink();
                                       }
 
@@ -168,12 +258,16 @@ class _ServiceListPageState extends StateMVC<ServiceListPage> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              currentStatus,
-                                              style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: Color(0xFFAD07B8),
+                                            Container(
+                                              constraints: const BoxConstraints(
+                                                  minWidth: 90),
+                                              child: Text(
+                                                currentStatus,
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xFFAD07B8),
+                                                ),
                                               ),
                                             ),
                                             const SizedBox(width: 35),
@@ -189,7 +283,7 @@ class _ServiceListPageState extends StateMVC<ServiceListPage> {
                                                 ),
                                                 const SizedBox(height: 10),
                                                 Text(
-                                                  "id: ${serviceDoc.id}",
+                                                  "ID: ${serviceDoc.id}",
                                                   style: TextStyle(
                                                       fontSize: 14,
                                                       color: Colors.grey[600]),

@@ -345,8 +345,8 @@ class AdminController extends ControllerMVC {
                         width: 100,
                         height: 38,
                         child: ElevatedButton(
-                          onPressed: () async {
-                            await admin.approveRegistrationRequest(
+                          onPressed: () {
+                            admin.approveRegistrationRequest(
                                 userDoc.id,
                                 userDoc['name'],
                                 userDoc['email'],
@@ -396,5 +396,19 @@ class AdminController extends ControllerMVC {
 
   Future<String> retrieveUserName(String id, String collectionName) async {
     return await admin.retrieveUserName(id, collectionName);
+  }
+
+  DateTime formatDateTime(Timestamp timestamp) {
+    tz.initializeTimeZones();
+    tz.Location location = tz.getLocation('Asia/Kuala_Lumpur');
+    tz.TZDateTime dateTime = tz.TZDateTime.from(timestamp.toDate(), location);
+    return dateTime;
+  }
+
+  String formatStrFromDateTime(DateTime dateTime) {
+    tz.initializeTimeZones();
+    tz.Location location = tz.getLocation('Asia/Kuala_Lumpur');
+    tz.TZDateTime newDateTime = tz.TZDateTime.from(dateTime, location);
+    return DateFormat('dd/MM/yyyy').format(newDateTime);
   }
 }
