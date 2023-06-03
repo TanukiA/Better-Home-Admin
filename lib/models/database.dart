@@ -95,6 +95,7 @@ class Database extends ChangeNotifier {
     QuerySnapshot snapshot = await _firebaseFirestore
         .collection('technicians')
         .where('approvalStatus', isEqualTo: false)
+        .orderBy('dateTimeRegistered', descending: true)
         .get();
 
     return snapshot.docs;
@@ -110,5 +111,31 @@ class Database extends ChangeNotifier {
       throw PlatformException(
           code: 'update-approvalStatus-failed', message: e.toString());
     }
+  }
+
+  Future<List<DocumentSnapshot>> readServices() async {
+    QuerySnapshot querySnapshot = await _firebaseFirestore
+        .collection('services')
+        .where('serviceStatus', whereIn: [
+          'Assigning',
+          'Confirmed',
+          'In Progress',
+          'Completed',
+          'Rated'
+        ])
+        .orderBy('dateTimeSubmitted', descending: true)
+        .get();
+
+    List<DocumentSnapshot> documents =
+        querySnapshot.docs.map((doc) => doc).toList();
+    return documents;
+  }
+
+  Future<String> readUserName(String id, String collectionName) async {
+    final CollectionReference usersRef =
+        _firebaseFirestore.collection(collectionName);
+
+    final DocumentSnapshot userDoc = await usersRef.doc(id).get();
+    return userDoc.get('name');
   }
 }

@@ -5,29 +5,37 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-class RegistrationRequestsPage extends StatefulWidget {
-  const RegistrationRequestsPage({Key? key, required this.adminCon})
-      : super(key: key);
+class ServiceListPage extends StatefulWidget {
+  const ServiceListPage({Key? key, required this.adminCon}) : super(key: key);
   final AdminController adminCon;
 
   @override
-  StateMVC<RegistrationRequestsPage> createState() =>
-      _RegistrationRequestsPageState();
+  StateMVC<ServiceListPage> createState() => _ServiceListPageState();
 }
 
-class _RegistrationRequestsPageState
-    extends StateMVC<RegistrationRequestsPage> {
+class _ServiceListPageState extends StateMVC<ServiceListPage> {
   bool isLoading = true;
-  List<DocumentSnapshot> techniciansDoc = [];
+  List<DocumentSnapshot> servicesDoc = [];
+
+  String selectedServiceStatus = "All service status";
+  final List<String> serviceStatusOptions = [
+    "All service status",
+    "Assigning",
+    "Confirmed",
+    "In Progress",
+    "Completed",
+    "Rated",
+  ];
 
   @override
   void initState() {
-    setRequestData();
+    setUserData();
     super.initState();
   }
 
-  Future<void> setRequestData() async {
-    techniciansDoc = await widget.adminCon.retrieveRegistrationRequests();
+  Future<void> setUserData() async {
+    servicesDoc = await widget.adminCon.retrieveServices();
+
     setState(() {
       isLoading = false;
     });
@@ -42,7 +50,7 @@ class _RegistrationRequestsPageState
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    final ButtonStyle manageBtnStyle = ElevatedButton.styleFrom(
+    final ButtonStyle viewBtnStyle = ElevatedButton.styleFrom(
       textStyle: const TextStyle(
         fontSize: 12,
       ),
@@ -58,7 +66,7 @@ class _RegistrationRequestsPageState
 
     return Scaffold(
       backgroundColor: const Color(0xFFE8E5D4),
-      body: isLoading
+      body: isLoading == true
           ? const Center(
               child: CircularProgressIndicator(
                 color: Color.fromARGB(255, 51, 119, 54),
@@ -69,22 +77,52 @@ class _RegistrationRequestsPageState
                 VerticalMenu(
                   loginCon: LoginController(),
                   adminCon: AdminController(),
-                  currentScreen: "Registration Requests",
+                  currentScreen: "Ongoing & Completed Services",
                 ),
                 Expanded(
                   child: Column(
                     children: [
                       const SizedBox(height: 20),
                       const Text(
-                        "Technicians' Registration Requests",
+                        "Ongoing and Completed Services",
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 25),
+                      Container(
+                        margin: const EdgeInsets.only(top: 20, bottom: 12),
+                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: DropdownButton<String>(
+                          value: selectedServiceStatus,
+                          items: serviceStatusOptions
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedServiceStatus = newValue!;
+                            });
+                          },
+                        ),
+                      ),
                       Expanded(
-                        child: techniciansDoc.isEmpty
+                        child: servicesDoc.isEmpty
                             ? const Center(
                                 child: Text(
                                   "No registration request available",
@@ -96,10 +134,18 @@ class _RegistrationRequestsPageState
                                   height:
                                       MediaQuery.of(context).size.height - 150,
                                   child: ListView.builder(
-                                    itemCount: techniciansDoc.length,
+                                    itemCount: servicesDoc.length,
                                     itemBuilder: (context, index) {
-                                      final technicianDoc =
-                                          techniciansDoc[index];
+                                      final serviceDoc = servicesDoc[index];
+                                      final currentStatus =
+                                          serviceDoc['serviceStatus'];
+
+                                      if (selectedServiceStatus !=
+                                              "All service status" &&
+                                          selectedServiceStatus !=
+                                              currentStatus) {
+                                        return const SizedBox.shrink();
+                                      }
 
                                       return Container(
                                         width: double.infinity,
@@ -122,48 +168,43 @@ class _RegistrationRequestsPageState
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
+                                            Text(
+                                              currentStatus,
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color(0xFFAD07B8),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 35),
                                             Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  technicianDoc['name'],
+                                                  serviceDoc['serviceName'],
                                                   style: const TextStyle(
                                                     fontSize: 16,
                                                   ),
                                                 ),
-                                                const SizedBox(height: 8),
+                                                const SizedBox(height: 10),
                                                 Text(
-                                                  technicianDoc['phoneNumber'],
+                                                  "id: ${serviceDoc.id}",
                                                   style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.grey[600],
-                                                  ),
+                                                      fontSize: 14,
+                                                      color: Colors.grey[600]),
                                                 ),
                                               ],
                                             ),
                                             const Spacer(),
                                             ElevatedButton(
-                                              onPressed: () {
-                                                widget.adminCon
-                                                    .manageRequestClicked(
-                                                        technicianDoc, context);
-                                              },
-                                              style: manageBtnStyle,
+                                              onPressed: () {},
+                                              style: viewBtnStyle,
                                               child: const Text(
-                                                'Manage request',
+                                                'View details',
                                               ),
                                             ),
-                                            const SizedBox(width: 100),
-                                            Text(
-                                              widget.adminCon
-                                                  .formatToLocalDateTime(
-                                                      technicianDoc[
-                                                          'dateTimeRegistered']),
-                                              style: const TextStyle(
-                                                fontSize: 11,
-                                              ),
-                                            ),
+                                            const SizedBox(width: 130),
                                           ],
                                         ),
                                       );

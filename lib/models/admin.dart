@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'package:better_home_admin/models/database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:better_home_admin/models/auth_service.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 
 class Admin extends ModelMVC {
   String? email;
@@ -67,8 +69,46 @@ class Admin extends ModelMVC {
     return await firestore.getUnapprovedTechnicians();
   }
 
-  Future<void> approveRegistrationRequest(String id) async {
+  Future<void> approveRegistrationRequest(
+      String id, String name, String email, String phoneNumber) async {
     Database firestore = Database();
     await firestore.updateApprovalStatus(id);
+    final message =
+        'Your technician registration associated with $phoneNumber in BetterHome has been approved. Kindly login now.';
+    final response = await sendApprovalEmail(name, email, message);
+    if (response != 200) {
+      throw Exception('Send approval email failed');
+    }
+  }
+
+  Future sendApprovalEmail(String name, String email, String message) async {
+    final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
+    const serviceId = 'service_maoya7g';
+    const templateId = 'template_c2b1sda';
+    const userId = 'haj1CA0xZVtU10OOu';
+    final response = await http.post(url,
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'service_id': serviceId,
+          'template_id': templateId,
+          'user_id': userId,
+          'template_params': {
+            'to_name': name,
+            'to_email': email,
+            'message': message
+          }
+        }));
+    return response.statusCode;
+  }
+
+  Future<List<DocumentSnapshot>> retrieveServices() async {
+    Database firestore = Database();
+    return await firestore.readServices();
+  }
+
+  Future<String> retrieveUserName(String id, String collectionName) async {
+    Database firestore = Database();
+    String userName = await firestore.readUserName(id, collectionName);
+    return userName;
   }
 }

@@ -346,7 +346,11 @@ class AdminController extends ControllerMVC {
                         height: 38,
                         child: ElevatedButton(
                           onPressed: () async {
-                            await admin.approveRegistrationRequest(userDoc.id);
+                            await admin.approveRegistrationRequest(
+                                userDoc.id,
+                                userDoc['name'],
+                                userDoc['email'],
+                                userDoc['phoneNumber']);
                             if (context.mounted) {
                               Navigator.push(
                                 context,
@@ -377,5 +381,20 @@ class AdminController extends ControllerMVC {
         );
       },
     );
+  }
+
+  Future<List<DocumentSnapshot>> retrieveServices() async {
+    return await admin.retrieveServices();
+  }
+
+  String formatToLocalDate(Timestamp timestamp) {
+    tz.initializeTimeZones();
+    tz.Location location = tz.getLocation('Asia/Kuala_Lumpur');
+    tz.TZDateTime dateTime = tz.TZDateTime.from(timestamp.toDate(), location);
+    return DateFormat('dd-MM-yyyy').format(dateTime);
+  }
+
+  Future<String> retrieveUserName(String id, String collectionName) async {
+    return await admin.retrieveUserName(id, collectionName);
   }
 }
