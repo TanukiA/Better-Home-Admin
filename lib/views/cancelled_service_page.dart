@@ -5,15 +5,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-class ServiceListPage extends StatefulWidget {
-  const ServiceListPage({Key? key, required this.adminCon}) : super(key: key);
+class CancelledServicesPage extends StatefulWidget {
+  const CancelledServicesPage({Key? key, required this.adminCon})
+      : super(key: key);
   final AdminController adminCon;
 
   @override
-  StateMVC<ServiceListPage> createState() => _ServiceListPageState();
+  StateMVC<CancelledServicesPage> createState() => _CancelledServicesPage();
 }
 
-class _ServiceListPageState extends StateMVC<ServiceListPage> {
+class _CancelledServicesPage extends StateMVC<CancelledServicesPage> {
   bool isLoading = true;
   List<DocumentSnapshot> servicesDoc = [];
 
@@ -22,16 +23,6 @@ class _ServiceListPageState extends StateMVC<ServiceListPage> {
     end: DateTime(3000),
   );
 
-  String selectedServiceStatus = "All service status";
-  final List<String> serviceStatusOptions = [
-    "All service status",
-    "Assigning",
-    "Confirmed",
-    "In Progress",
-    "Completed",
-    "Rated",
-  ];
-
   @override
   void initState() {
     setUserData();
@@ -39,7 +30,7 @@ class _ServiceListPageState extends StateMVC<ServiceListPage> {
   }
 
   Future<void> setUserData() async {
-    servicesDoc = await widget.adminCon.retrieveServices();
+    servicesDoc = await widget.adminCon.retrieveCancelledServices();
 
     setState(() {
       isLoading = false;
@@ -110,38 +101,6 @@ class _ServiceListPageState extends StateMVC<ServiceListPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            margin: const EdgeInsets.only(top: 20, bottom: 12),
-                            padding: const EdgeInsets.only(left: 8, right: 8),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  spreadRadius: 2,
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: DropdownButton<String>(
-                              value: selectedServiceStatus,
-                              items: serviceStatusOptions
-                                  .map<DropdownMenuItem<String>>(
-                                      (String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  selectedServiceStatus = newValue!;
-                                });
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: 30),
                           ElevatedButton(
                             style: dateRangeBtnStyle,
                             onPressed: () async {
@@ -202,7 +161,7 @@ class _ServiceListPageState extends StateMVC<ServiceListPage> {
                         child: servicesDoc.isEmpty
                             ? const Center(
                                 child: Text(
-                                  "No service available",
+                                  "No cancelled service available",
                                   style: TextStyle(fontSize: 16),
                                 ),
                               )
@@ -219,13 +178,6 @@ class _ServiceListPageState extends StateMVC<ServiceListPage> {
                                       final serviceDateTime = widget.adminCon
                                           .formatDateTime(
                                               serviceDoc['dateTimeSubmitted']);
-
-                                      if (selectedServiceStatus !=
-                                              "All service status" &&
-                                          selectedServiceStatus !=
-                                              currentStatus) {
-                                        return const SizedBox.shrink();
-                                      }
 
                                       if (selectedDates.start !=
                                               DateTime(2000) &&

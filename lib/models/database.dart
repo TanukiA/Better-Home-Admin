@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:photo_view/photo_view.dart';
 
 class Database extends ChangeNotifier {
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
@@ -27,11 +28,6 @@ class Database extends ChangeNotifier {
   }
 
   Future<int> readServiceCount(String serviceCategory) async {
-    // Get the current month's start and end dates
-    //final now = DateTime.now();
-    //final startOfMonth = DateTime(now.year, now.month, 1);
-    //final endOfMonth = DateTime(now.year, now.month + 1, 0, 23, 59, 59);
-
     final querySnapshot = await _firebaseFirestore
         .collection('services')
         .where('serviceName', isGreaterThanOrEqualTo: serviceCategory)
@@ -137,5 +133,42 @@ class Database extends ChangeNotifier {
 
     final DocumentSnapshot userDoc = await usersRef.doc(id).get();
     return userDoc.get('name');
+  }
+
+  Future<List<Widget>> downloadServiceImages(
+      DocumentSnapshot serviceDoc) async {
+    List<String> imageRefs = List.from(serviceDoc['images']);
+
+    if (imageRefs.isNotEmpty) {
+      // Download the images from Cloud Storage and store them in a list of PhotoView
+      List<Future<Widget>> imageFutures = imageRefs.map((imageRef) async {
+        return SizedBox(
+          width: 390.0,
+          height: 280.0,
+          child: PhotoView(
+            imageProvider: NetworkImage(imageRef),
+            minScale: PhotoViewComputedScale.contained,
+            maxScale: PhotoViewComputedScale.covered * 2.5,
+          ),
+        );
+      }).toList();
+
+      Iterable<Future<Widget>> imageIterable = imageFutures;
+      List<Widget> images = await Future.wait(imageIterable);
+      return images;
+    }
+    return [];
+  }
+
+  Future<List<DocumentSnapshot>> readCancelledServices() async {
+    QuerySnapshot querySnapshot = await _firebaseFirestore
+        .collection('services')
+        .where('serviceStatus', whereIn: ['Cancelled', 'Refunded'])
+        .orderBy('dateTimeSubmitted', descending: true)
+        .get();
+
+    List<DocumentSnapshot> documents =
+        querySnapshot.docs.map((doc) => doc).toList();
+    return documents;
   }
 }

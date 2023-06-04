@@ -1,6 +1,7 @@
 import 'package:better_home_admin/controllers/admin_controller.dart';
 import 'package:better_home_admin/controllers/login_controller.dart';
 import 'package:better_home_admin/views/admin_dashboard.dart';
+import 'package:better_home_admin/views/cancelled_service_page.dart';
 import 'package:better_home_admin/views/registration_requests_page.dart';
 import 'package:better_home_admin/views/service_list_page.dart';
 import 'package:better_home_admin/views/user_accounts_page.dart';
@@ -83,6 +84,16 @@ class _VerticalMenuState extends StateMVC<VerticalMenu> {
           context,
           MaterialPageRoute(
             builder: (context) => ServiceListPage(
+              adminCon: widget.adminCon,
+            ),
+          ),
+        );
+        break;
+      case 'Cancelled Services':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CancelledServicesPage(
               adminCon: widget.adminCon,
             ),
           ),

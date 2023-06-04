@@ -111,4 +111,9 @@ class Admin extends ModelMVC {
     String userName = await firestore.readUserName(id, collectionName);
     return userName;
   }
+
+  Future<List<DocumentSnapshot>> retrieveCancelledServices() async {
+    Database firestore = Database();
+    return await firestore.readCancelledServices();
+  }
 }
