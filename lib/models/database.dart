@@ -171,4 +171,16 @@ class Database extends ChangeNotifier {
         querySnapshot.docs.map((doc) => doc).toList();
     return documents;
   }
+
+  Future<void> updateRefundStatus(String id) async {
+    try {
+      final userCollection = _firebaseFirestore.collection("services");
+      final userDoc = userCollection.doc(id);
+
+      await userDoc.update({'serviceStatus': 'Refunded'});
+    } catch (e) {
+      throw PlatformException(
+          code: 'update-status-failed', message: e.toString());
+    }
+  }
 }

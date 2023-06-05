@@ -131,4 +131,9 @@ class Admin extends ModelMVC {
     Database firestore = Database();
     return await firestore.readCancelledServices();
   }
+
+  Future<void> refundService(String id) async {
+    Database firestore = Database();
+    await firestore.updateRefundStatus(id);
+  }
 }

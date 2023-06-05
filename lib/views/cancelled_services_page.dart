@@ -25,11 +25,11 @@ class _CancelledServicesPage extends StateMVC<CancelledServicesPage> {
 
   @override
   void initState() {
-    setUserData();
+    setServiceData();
     super.initState();
   }
 
-  Future<void> setUserData() async {
+  Future<void> setServiceData() async {
     servicesDoc = await widget.adminCon.retrieveCancelledServices();
 
     setState(() {
@@ -84,14 +84,14 @@ class _CancelledServicesPage extends StateMVC<CancelledServicesPage> {
                 VerticalMenu(
                   loginCon: LoginController(),
                   adminCon: AdminController(),
-                  currentScreen: "Ongoing & Completed Services",
+                  currentScreen: "Cancelled Services",
                 ),
                 Expanded(
                   child: Column(
                     children: [
                       const SizedBox(height: 20),
                       const Text(
-                        "Ongoing and Completed Services",
+                        "Cancelled Services",
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
@@ -246,7 +246,7 @@ class _CancelledServicesPage extends StateMVC<CancelledServicesPage> {
                                             ElevatedButton(
                                               onPressed: () {
                                                 widget.adminCon
-                                                    .viewServiceDetailClicked(
+                                                    .viewCancelledServiceDetailClicked(
                                                         serviceDoc, context);
                                               },
                                               style: viewBtnStyle,

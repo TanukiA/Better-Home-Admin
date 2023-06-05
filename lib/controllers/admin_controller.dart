@@ -1,5 +1,6 @@
 import 'package:better_home_admin/models/admin.dart';
 import 'package:better_home_admin/models/database.dart';
+import 'package:better_home_admin/views/cancelled_services_detail_page.dart';
 import 'package:better_home_admin/views/request_detail_page.dart';
 import 'package:better_home_admin/views/service_detail_page.dart';
 import 'package:better_home_admin/views/user_accounts_page.dart';
@@ -283,5 +284,21 @@ class AdminController extends ControllerMVC {
 
   Future<List<DocumentSnapshot>> retrieveCancelledServices() async {
     return await admin.retrieveCancelledServices();
+  }
+
+  void viewCancelledServiceDetailClicked(
+      DocumentSnapshot serviceDoc, BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CancelledServiceDetailPage(
+            controller: AdminController(),
+            serviceDoc: serviceDoc,
+          );
+        });
+  }
+
+  Future<void> refundService(String id) async {
+    await admin.refundService(id);
   }
 }
