@@ -130,8 +130,11 @@ class _RequestDetailPageState extends StateMVC<RequestDetailPage> {
                     height: 38,
                     child: ElevatedButton(
                       onPressed: () async {
-                        await widget.controller
-                            .removeUserAccount("Technician", widget.userDoc.id);
+                        await widget.controller.rejectRegistrationRequest(
+                            widget.userDoc.id,
+                            widget.userDoc['name'],
+                            widget.userDoc['email'],
+                            widget.userDoc['phoneNumber']);
                         if (context.mounted) {
                           Navigator.push(
                             context,

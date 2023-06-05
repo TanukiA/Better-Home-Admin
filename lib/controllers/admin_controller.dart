@@ -225,8 +225,9 @@ class AdminController extends ControllerMVC {
     admin.viewVerificationFile(verificationDocUrl);
   }
 
-  Future<void> removeUserAccount(String accountType, String id) async {
-    await admin.removeUserAccount(accountType, id);
+  Future<void> rejectRegistrationRequest(
+      String id, String name, String email, String phoneNumber) async {
+    await admin.rejectRegistrationRequest(id, name, email, phoneNumber);
   }
 
   Future<void> approveRegistrationRequest(

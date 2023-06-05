@@ -69,19 +69,33 @@ class Admin extends ModelMVC {
     return await firestore.getUnapprovedTechnicians();
   }
 
+  Future<void> rejectRegistrationRequest(
+      String id, String name, String email, String phoneNumber) async {
+    removeUserAccount("Technician", id);
+    final message =
+        'We are sorry to inform you that your technician registration associated with $phoneNumber in BetterHome has been rejected. Kindly contact us for clarification.';
+    final response = await sendNotificationEmail(
+        name, email, message, 'Registration rejected');
+    if (response != 200) {
+      throw Exception('Send rejection email failed');
+    }
+  }
+
   Future<void> approveRegistrationRequest(
       String id, String name, String email, String phoneNumber) async {
     Database firestore = Database();
     await firestore.updateApprovalStatus(id);
     final message =
         'Your technician registration associated with $phoneNumber in BetterHome has been approved. Kindly login now.';
-    final response = await sendApprovalEmail(name, email, message);
+    final response = await sendNotificationEmail(
+        name, email, message, 'Registration approved');
     if (response != 200) {
       throw Exception('Send approval email failed');
     }
   }
 
-  Future sendApprovalEmail(String name, String email, String message) async {
+  Future sendNotificationEmail(
+      String name, String email, String message, String subject) async {
     final url = Uri.parse('https://api.emailjs.com/api/v1.0/email/send');
     const serviceId = 'service_maoya7g';
     const templateId = 'template_c2b1sda';
@@ -95,6 +109,7 @@ class Admin extends ModelMVC {
           'template_params': {
             'to_name': name,
             'to_email': email,
+            'subject': subject,
             'message': message
           }
         }));
