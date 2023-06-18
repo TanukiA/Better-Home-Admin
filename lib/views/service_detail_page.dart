@@ -50,6 +50,7 @@ class _ServiceDetailPageState extends StateMVC<ServiceDetailPage> {
             const Text('Service Details',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
+                  fontSize: 14,
                 )),
             IconButton(
               icon: const Icon(Icons.close),

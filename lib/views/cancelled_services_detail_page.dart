@@ -53,6 +53,7 @@ class _CancelledServiceDetailPageState
             const Text('Service Details',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
+                  fontSize: 14,
                 )),
             IconButton(
               icon: const Icon(Icons.close),
@@ -262,36 +263,37 @@ class _CancelledServiceDetailPageState
                           }
                         }),
                     const SizedBox(height: 15),
-                    Center(
-                      child: SizedBox(
-                        width: 130,
-                        height: 40,
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await widget.controller
-                                .refundService(widget.serviceDoc.id);
-                            if (context.mounted) {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CancelledServicesPage(
-                                    adminCon: AdminController(),
+                    if (widget.serviceDoc["serviceStatus"] == "Cancelled")
+                      Center(
+                        child: SizedBox(
+                          width: 130,
+                          height: 40,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              await widget.controller
+                                  .refundService(widget.serviceDoc.id);
+                              if (context.mounted) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CancelledServicesPage(
+                                      adminCon: AdminController(),
+                                    ),
                                   ),
-                                ),
-                              );
-                            }
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                const Color.fromARGB(255, 16, 125, 119)),
-                            foregroundColor:
-                                MaterialStateProperty.all<Color>(Colors.white),
+                                );
+                              }
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  const Color.fromARGB(255, 16, 125, 119)),
+                              foregroundColor: MaterialStateProperty.all<Color>(
+                                  Colors.white),
+                            ),
+                            child: Text(
+                                'Refund RM ${widget.serviceDoc["paidAmount"].toInt()}'),
                           ),
-                          child: Text(
-                              'Refund RM ${widget.serviceDoc["paidAmount"].toInt()}'),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ));
