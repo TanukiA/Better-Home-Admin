@@ -3,6 +3,7 @@ import 'package:better_home_admin/models/database.dart';
 import 'package:better_home_admin/views/cancelled_services_detail_page.dart';
 import 'package:better_home_admin/views/request_detail_page.dart';
 import 'package:better_home_admin/views/service_detail_page.dart';
+import 'package:better_home_admin/views/technician_review_detail_page.dart';
 import 'package:better_home_admin/views/user_accounts_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -109,7 +110,7 @@ class AdminController extends ControllerMVC {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'Specialization: ${userDoc['specialization']}',
+                        'Specialization: ${userDoc['specialization'].join(', ')}',
                         style: const TextStyle(
                           fontSize: 16,
                         ),
@@ -300,5 +301,39 @@ class AdminController extends ControllerMVC {
 
   Future<void> refundService(String id) async {
     await admin.refundService(id);
+  }
+
+  Future<List<DocumentSnapshot>> retrieveTechnicianData() async {
+    return await admin.retrieveTechnicianData();
+  }
+
+  Future<List<Map<String, dynamic>>> retrieveTechnicianRating(
+      String technicianID) async {
+    final ratingData = await admin.retrieveTechnicianRating(technicianID);
+
+    return ratingData;
+  }
+
+  double calculateAvgRating(List<Map<String, dynamic>> data) {
+    final List allStarQtys = data
+        .where((review) => review.containsKey('starQty'))
+        .map((review) => review['starQty'].toDouble())
+        .toList();
+
+    final double sum = allStarQtys.reduce((a, b) => a + b);
+    return sum / allStarQtys.length;
+  }
+
+  void viewCustomerReviewClicked(List<Map<String, dynamic>> reviewData,
+      String technicianName, BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return TechnicianReviewDetailPage(
+            controller: AdminController(),
+            reviewData: reviewData,
+            technicianName: technicianName,
+          );
+        });
   }
 }

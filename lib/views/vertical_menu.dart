@@ -4,6 +4,7 @@ import 'package:better_home_admin/views/admin_dashboard.dart';
 import 'package:better_home_admin/views/cancelled_services_page.dart';
 import 'package:better_home_admin/views/registration_requests_page.dart';
 import 'package:better_home_admin/views/service_list_page.dart';
+import 'package:better_home_admin/views/technician_review_page.dart';
 import 'package:better_home_admin/views/user_accounts_page.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -99,7 +100,16 @@ class _VerticalMenuState extends StateMVC<VerticalMenu> {
           ),
         );
         break;
-      // Handle other menu items here
+      case 'Technician Reviews':
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TechnicianReviewPage(
+              adminCon: widget.adminCon,
+            ),
+          ),
+        );
+        break;
       default:
         break;
     }

@@ -136,4 +136,15 @@ class Admin extends ModelMVC {
     Database firestore = Database();
     await firestore.updateRefundStatus(id);
   }
+
+  Future<List<DocumentSnapshot>> retrieveTechnicianData() async {
+    Database db = Database();
+    return await db.readApprovedTechnicians();
+  }
+
+  Future<List<Map<String, dynamic>>> retrieveTechnicianRating(
+      String technicianID) async {
+    Database db = Database();
+    return await db.readRating(technicianID);
+  }
 }

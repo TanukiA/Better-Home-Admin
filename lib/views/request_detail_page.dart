@@ -79,7 +79,7 @@ class _RequestDetailPageState extends StateMVC<RequestDetailPage> {
             ),
             const SizedBox(height: 10),
             Text(
-              'Specialization: ${widget.userDoc['specialization']}',
+              'Specialization: ${widget.userDoc['specialization'].join(', ')}',
               style: const TextStyle(
                 fontSize: 16,
               ),

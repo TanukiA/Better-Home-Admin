@@ -42,7 +42,9 @@ class Database extends ChangeNotifier {
 
   Future<Map<String, dynamic>> readUserData() async {
     final customersQuery = _firebaseFirestore.collection('customers');
-    final techniciansQuery = _firebaseFirestore.collection('technicians');
+    final techniciansQuery = _firebaseFirestore
+        .collection('technicians')
+        .where('approvalStatus', isEqualTo: true);
 
     final customersSnapshot = await customersQuery.get();
     final techniciansSnapshot = await techniciansQuery.get();
@@ -182,5 +184,37 @@ class Database extends ChangeNotifier {
       throw PlatformException(
           code: 'update-status-failed', message: e.toString());
     }
+  }
+
+  Future<List<DocumentSnapshot>> readApprovedTechnicians() async {
+    QuerySnapshot snapshot = await _firebaseFirestore
+        .collection('technicians')
+        .where('approvalStatus', isEqualTo: true)
+        .get();
+
+    return snapshot.docs;
+  }
+
+  Future<List<Map<String, dynamic>>> readRating(String technicianID) async {
+    final ratingQuerySnapshot = await _firebaseFirestore
+        .collection('ratings')
+        .where('technicianID', isEqualTo: technicianID)
+        .get();
+
+    if (ratingQuerySnapshot.docs.isEmpty) {
+      return [];
+    }
+
+    final List<Map<String, dynamic>> ratingDataList = [];
+
+    for (final ratingDoc in ratingQuerySnapshot.docs) {
+      final ratingData = ratingDoc.data();
+      final starQty = ratingData['starQty']?.toDouble() ?? 0.0;
+      final reviewText = ratingData['reviewText'] ?? '';
+
+      ratingDataList.add({'starQty': starQty, 'reviewText': reviewText});
+    }
+
+    return ratingDataList;
   }
 }
