@@ -271,24 +271,27 @@ class _ServiceListPageState extends StateMVC<ServiceListPage> {
                                               ),
                                             ),
                                             const SizedBox(width: 35),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  serviceDoc['serviceName'],
-                                                  style: const TextStyle(
-                                                    fontSize: 16,
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    serviceDoc['serviceName'],
+                                                    style: const TextStyle(
+                                                      fontSize: 16,
+                                                    ),
                                                   ),
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Text(
-                                                  "ID: ${serviceDoc.id}",
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors.grey[600]),
-                                                ),
-                                              ],
+                                                  const SizedBox(height: 10),
+                                                  Text(
+                                                    "ID: ${serviceDoc.id}",
+                                                    style: TextStyle(
+                                                        fontSize: 14,
+                                                        color:
+                                                            Colors.grey[600]),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                             const Spacer(),
                                             ElevatedButton(
