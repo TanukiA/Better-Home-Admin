@@ -44,7 +44,7 @@ void main() {
     mockUserCredential = MockUserCredential();
   });
 
-  group('signIn', () {
+  group('Admin Login', () {
     test('Validate email and password (positive input)', () async {
       when(() => mockFirebaseAuth.signInWithEmailAndPassword(
             email: any(named: 'email'),

@@ -73,7 +73,7 @@ class Admin extends ModelMVC {
       String id, String name, String email, String phoneNumber) async {
     removeUserAccount("Technician", id);
     final message =
-        'We are sorry to inform you that your technician registration associated with $phoneNumber in BetterHome has been rejected. Kindly contact us for clarification.';
+        'We are sorry to inform you that your technician registration associated with $phoneNumber in BetterHome has been rejected. Kindly contact us if you need clarification.';
     final response = await sendNotificationEmail(
         name, email, message, 'Registration rejected');
     if (response != 200) {
