@@ -173,7 +173,7 @@ class _AdminDashboardState extends StateMVC<AdminDashboard> {
                                   ),
                                   const SizedBox(height: 12),
                                   Text(
-                                    "$cancelRate%",
+                                    "${cancelRate.toStringAsFixed(2)}%",
                                     style: const TextStyle(
                                       fontSize: 23,
                                       fontFamily: 'Roboto',

@@ -177,7 +177,7 @@ class _TechnicianReviewPageState extends StateMVC<TechnicianReviewPage> {
                                               ),
                                             const SizedBox(width: 60),
                                             Container(
-                                                width: 65,
+                                                width: 72,
                                                 height: 40,
                                                 padding:
                                                     const EdgeInsets.all(7),
