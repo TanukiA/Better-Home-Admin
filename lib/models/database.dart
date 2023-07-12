@@ -144,11 +144,12 @@ class Database extends ChangeNotifier {
     if (imageRefs.isNotEmpty) {
       // Download the images from Cloud Storage and store them in a list of PhotoView
       List<Future<Widget>> imageFutures = imageRefs.map((imageRef) async {
+        String encodedImageRef = Uri.encodeFull(imageRef);
         return SizedBox(
           width: 390.0,
           height: 280.0,
           child: PhotoView(
-            imageProvider: NetworkImage(imageRef),
+            imageProvider: NetworkImage(encodedImageRef),
             minScale: PhotoViewComputedScale.contained,
             maxScale: PhotoViewComputedScale.covered * 2.5,
           ),

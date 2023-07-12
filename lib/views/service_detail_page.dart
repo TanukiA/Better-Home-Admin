@@ -262,24 +262,6 @@ class _ServiceDetailPageState extends StateMVC<ServiceDetailPage> {
                       ],
                     ),
                     const SizedBox(height: 15.0),
-                    FutureBuilder<List<Widget>>(
-                        future: widget.controller
-                            .retrieveServiceImages(widget.serviceDoc),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return SizedBox(
-                              width: 390.0,
-                              height: 280.0,
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: snapshot.data!,
-                              ),
-                            );
-                          } else {
-                            return Container();
-                          }
-                        }),
-                    const SizedBox(height: 15),
                   ],
                 ),
               ));
