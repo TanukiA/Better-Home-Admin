@@ -207,6 +207,9 @@ class _UserAccountsPageState extends StateMVC<UserAccountsPage> {
                                               style: viewBtnStyle,
                                               child: const Text(
                                                 'View full profile',
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                ),
                                               ),
                                             ),
                                             const SizedBox(width: 130),

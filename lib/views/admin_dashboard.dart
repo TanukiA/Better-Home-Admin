@@ -130,7 +130,7 @@ class _AdminDashboardState extends StateMVC<AdminDashboard> {
                                       color: Colors.black,
                                     ),
                                   ),
-                                  const SizedBox(height: 12),
+                                  const SizedBox(height: 10),
                                   Text(
                                     "$technicianNumber",
                                     style: const TextStyle(
