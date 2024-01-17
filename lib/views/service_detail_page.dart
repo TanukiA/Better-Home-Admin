@@ -253,7 +253,7 @@ class _ServiceDetailPageState extends StateMVC<ServiceDetailPage> {
                         ),
                         const SizedBox(height: 25.0),
                         Text(
-                          'TOTAL: RM ${widget.serviceDoc["paidAmount"].toInt()}',
+                          'TOTAL: RM ${widget.serviceDoc["payment"].toInt()}',
                           style: const TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,

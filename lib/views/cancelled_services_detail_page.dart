@@ -236,7 +236,7 @@ class _CancelledServiceDetailPageState
                         ),
                         const SizedBox(height: 25.0),
                         Text(
-                          'TOTAL: RM ${widget.serviceDoc["paidAmount"].toInt()}',
+                          'TOTAL: RM ${widget.serviceDoc["payment"].toInt()}',
                           style: const TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
@@ -248,8 +248,8 @@ class _CancelledServiceDetailPageState
                     if (widget.serviceDoc["serviceStatus"] == "Cancelled")
                       Center(
                         child: SizedBox(
-                          width: 130,
-                          height: 40,
+                          width: 147,
+                          height: 44,
                           child: ElevatedButton(
                             onPressed: () async {
                               await widget.controller
@@ -265,14 +265,13 @@ class _CancelledServiceDetailPageState
                                 );
                               }
                             },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  const Color.fromARGB(255, 16, 125, 119)),
-                              foregroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.white),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 16, 125, 119),
+                              foregroundColor: Colors.white,
                             ),
                             child: Text(
-                                'Refund RM ${widget.serviceDoc["paidAmount"].toInt()}'),
+                                'Refund RM ${widget.serviceDoc["payment"].toInt()}'),
                           ),
                         ),
                       ),

@@ -54,7 +54,7 @@ class _UserAccountsPageState extends StateMVC<UserAccountsPage> {
       ),
       backgroundColor: const Color.fromRGBO(46, 125, 45, 1),
       foregroundColor: Colors.white,
-      fixedSize: Size(size.width * 0.10, 33),
+      fixedSize: Size(size.width * 0.12, 33),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(30),
       ),

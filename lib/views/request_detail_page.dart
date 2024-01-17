@@ -94,7 +94,7 @@ class _RequestDetailPageState extends StateMVC<RequestDetailPage> {
             const SizedBox(height: 18),
             if (widget.docData.containsKey('verificationDoc'))
               SizedBox(
-                width: 200,
+                width: 205,
                 height: 38,
                 child: ElevatedButton(
                   onPressed: () {
@@ -102,11 +102,18 @@ class _RequestDetailPageState extends StateMVC<RequestDetailPage> {
                         widget.userDoc['verificationDoc'];
                     widget.controller.viewVerificationFile(verificationDocUrl);
                   },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color(0xFF89B218)),
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
+                  style: ElevatedButton.styleFrom(
+                    textStyle: const TextStyle(
+                      fontSize: 14,
+                    ),
+                    backgroundColor: const Color(0xFF89B218),
+                    foregroundColor: Colors.white,
+                    fixedSize: const Size(50, 33),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    elevation: 3,
+                    shadowColor: Colors.grey[400],
                   ),
                   child: const Text('Download verification file'),
                 ),
@@ -126,7 +133,7 @@ class _RequestDetailPageState extends StateMVC<RequestDetailPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    width: 100,
+                    width: 103,
                     height: 38,
                     child: ElevatedButton(
                       onPressed: () async {
@@ -146,18 +153,16 @@ class _RequestDetailPageState extends StateMVC<RequestDetailPage> {
                           );
                         }
                       },
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.black),
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        foregroundColor: Colors.white,
                       ),
                       child: const Text('Reject'),
                     ),
                   ),
                   const SizedBox(width: 15),
                   SizedBox(
-                    width: 100,
+                    width: 103,
                     height: 38,
                     child: ElevatedButton(
                       onPressed: () {
@@ -177,11 +182,10 @@ class _RequestDetailPageState extends StateMVC<RequestDetailPage> {
                           );
                         }
                       },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            const Color.fromRGBO(46, 125, 45, 1)),
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.white),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromRGBO(46, 125, 45, 1),
+                        foregroundColor: Colors.white,
+                        fixedSize: const Size(65, 33),
                       ),
                       child: const Text('Approve'),
                     ),

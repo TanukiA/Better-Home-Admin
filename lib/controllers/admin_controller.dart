@@ -125,7 +125,7 @@ class AdminController extends ControllerMVC {
                       const SizedBox(height: 18),
                       if (docData.containsKey('verificationDoc'))
                         SizedBox(
-                          width: 200,
+                          width: 205,
                           height: 38,
                           child: ElevatedButton(
                             onPressed: () {
@@ -133,11 +133,18 @@ class AdminController extends ControllerMVC {
                                   userDoc['verificationDoc'];
                               admin.viewVerificationFile(verificationDocUrl);
                             },
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  const Color(0xFF89B218)),
-                              foregroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.white),
+                            style: ElevatedButton.styleFrom(
+                              textStyle: const TextStyle(
+                                fontSize: 14,
+                              ),
+                              backgroundColor: const Color(0xFF89B218),
+                              foregroundColor: Colors.white,
+                              fixedSize: const Size(50, 33),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              elevation: 3,
+                              shadowColor: Colors.grey[400],
                             ),
                             child: const Text('Download verification file'),
                           ),

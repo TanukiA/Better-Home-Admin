@@ -75,7 +75,7 @@ class _ServiceListPageState extends StateMVC<ServiceListPage> {
       ),
       backgroundColor: Colors.black,
       foregroundColor: Colors.white,
-      fixedSize: Size(size.width * 0.11, 37),
+      fixedSize: Size(size.width * 0.14, 37),
       elevation: 3,
       shadowColor: Colors.grey[400],
     );

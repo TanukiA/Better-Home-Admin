@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 class CancelledServicesPage extends StatefulWidget {
-  const CancelledServicesPage({Key? key, required this.adminCon})
-      : super(key: key);
+  const CancelledServicesPage({super.key, required this.adminCon});
   final AdminController adminCon;
 
   @override
@@ -66,7 +65,7 @@ class _CancelledServicesPage extends StateMVC<CancelledServicesPage> {
       ),
       backgroundColor: Colors.black,
       foregroundColor: Colors.white,
-      fixedSize: Size(size.width * 0.11, 37),
+      fixedSize: Size(size.width * 0.14, 37),
       elevation: 3,
       shadowColor: Colors.grey[400],
     );
